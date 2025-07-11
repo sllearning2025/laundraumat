@@ -1,0 +1,15 @@
+.back-btn {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  padding: 0;
+  outline: none;
+  transition: transform 0.2s;
+}
+.back-btn:hover {
+  transform: scale(1.1);
+}

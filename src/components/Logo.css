@@ -1,0 +1,16 @@
+.logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 1.5rem;
+  animation: logo-zoom 2s infinite alternate;
+}
+
+@keyframes logo-zoom {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.15);
+  }
+}

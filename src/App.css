@@ -3,7 +3,10 @@
 }
 
 .App-logo {
+  background: url('../public/laundry.png') no-repeat center center;
+  background-size: contain;
   height: 40vmin;
+  width: 40vmin;
   pointer-events: none;
 }
 

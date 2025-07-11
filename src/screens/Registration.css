@@ -1,0 +1,173 @@
+.registration-screen {
+  position: relative;
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f7f7 url('../../public/owner.png') no-repeat center center;
+  background-size: cover;
+}
+
+.registration-card {
+  background: rgba(255,255,255,0.95);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(9,39,138,0.12);
+  padding: 2.5rem 2rem;
+  max-width: 350px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.registration-title {
+  color: #09278a;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.registration-card h2 {
+  color: #09278a;
+  margin-bottom: 1.5rem;
+  font-size: 1.6rem;
+}
+
+.registration-input {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f7f7f7;
+  transition: border 0.2s;
+}
+.registration-input:focus {
+  border-color: #09278a;
+  outline: none;
+}
+
+.registration-btn {
+  width: 100%;
+  background: #09278a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s;
+}
+.registration-btn:hover {
+  background: #0b3bb3;
+}
+
+.registration-btns {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 3.5rem;
+}
+
+.registration-type-btn {
+  min-width: 220px;
+  padding: 1.2rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(9,39,138,0.10);
+  transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), background 0.2s;
+  opacity: 0;
+}
+
+.owner-btn {
+  background: #09278a;
+  animation: slideInLeft 1s forwards;
+}
+
+.service-btn {
+  background: #0baf60;
+  animation: slideInRight 1s forwards;
+}
+
+.owner-btn:hover {
+  background: #0b3bb3;
+  transform: scale(1.05);
+}
+.service-btn:hover {
+  background: #098f4a;
+  transform: scale(1.05);
+}
+
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-100vw);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100vw);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .registration-card {
+    padding: 1.2rem 0.5rem;
+    max-width: 95vw;
+  }
+  .registration-card h2 {
+    font-size: 1.2rem;
+  }
+  .registration-input {
+    font-size: 0.95rem;
+    padding: 0.6rem 0.7rem;
+  }
+  .registration-btn {
+    font-size: 1rem;
+    padding: 0.7rem 0;
+  }
+  .registration-btns {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .registration-type-btn {
+    min-width: 0;
+    width: 100%;
+    font-size: 1rem;
+    padding: 1rem 0.5rem;
+  }
+  .registration-title {
+    font-size: 1.3rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .registration-screen {
+    background-image: url('../../public/laundrywal1.png');
+  }
+  .registration-card {
+    max-width: 420px;
+    padding: 3rem 2.5rem;
+  }
+  .registration-card h2 {
+    font-size: 2rem;
+  }
+}
