@@ -3,11 +3,13 @@ import RegisterButton from '../components/RegisterButton';
 import LoginButton from '../components/LoginButton';
 import Registration from './Registration';
 import OwnerRegistration from './OwnerRegistration';
+import LoginScreen from './LoginScreen';
 import './Dashboard.css';
 
 function Dashboard() {
   const [showRegistration, setShowRegistration] = useState(false);
   const [showOwnerRegistration, setShowOwnerRegistration] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
 
   if (showRegistration) {
     return <Registration onBack={() => setShowRegistration(false)} />;
@@ -17,13 +19,17 @@ function Dashboard() {
     return <OwnerRegistration onBack={() => setShowOwnerRegistration(false)} />;
   }
 
+  if (showLogin) {
+    return <LoginScreen onBack={() => setShowLogin(false)} onRegister={() => { setShowLogin(false); setShowRegistration(true); }} />;
+  }
+
   return (
     <div className="dashboard">
       <h1>Welcome to Laundraumat Dashboard</h1>
       <p>Here you can manage your laundry orders and account.</p>
-      <div>
+      <div className="dashboard-btn-row">
         <RegisterButton onClick={() => setShowRegistration(true)} />
-        <LoginButton />
+        <LoginButton onClick={() => setShowLogin(true)} />
       </div>
     </div>
   );

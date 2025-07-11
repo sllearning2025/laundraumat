@@ -24,6 +24,21 @@
   font-size: 1.2rem;
 }
 
+.dashboard-btn-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.laundraumat-btn {
+  flex: 1;
+  min-width: 120px;
+  max-width: 180px;
+}
+
 @media (max-width: 600px) {
   .dashboard {
     font-size: 1.2rem;

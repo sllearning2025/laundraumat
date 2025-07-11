@@ -1,17 +1,18 @@
-.owner-registration-screen {
+/* LoginScreen.css */
+.login-screen {
   min-height: 100vh;
   height: 100vh;
   width: 100vw;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f7f7f7 url('../../public/owner.png') no-repeat center center;
+  background: #f7f7f7 url('../../public/login.png') no-repeat center center;
   background-size: cover;
   position: relative;
   overflow: hidden;
 }
 
-.owner-registration-card {
+.login-card {
   background: rgba(255,255,255,0.97);
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(9,39,138,0.12);
@@ -24,13 +25,13 @@
   box-sizing: border-box;
 }
 
-.owner-registration-card h2 {
+.login-card h2 {
   color: #09278a;
   margin-bottom: 1.5rem;
   font-size: 1.6rem;
 }
 
-.owner-registration-input {
+.login-input {
   width: 100%;
   padding: 0.7rem 1rem;
   margin-bottom: 1rem;
@@ -41,12 +42,12 @@
   transition: border 0.2s;
   box-sizing: border-box;
 }
-.owner-registration-input:focus {
+.login-input:focus {
   border-color: #09278a;
   outline: none;
 }
 
-.owner-registration-btn {
+.login-btn {
   width: 100%;
   background: #09278a;
   color: #fff;
@@ -59,8 +60,22 @@
   margin-top: 0.5rem;
   transition: background 0.2s;
 }
-.owner-registration-btn:hover {
+.login-btn:hover {
   background: #0b3bb3;
+}
+
+.login-btn-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1.2rem;
+}
+.login-btn {
+  flex: 1;
+  min-width: 120px;
+  max-width: 180px;
 }
 
 .back-btn {
@@ -87,63 +102,64 @@
   width: 100%;
 }
 
-.phone-row {
+.register-link-row {
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 0.5rem;
-  width: 100%;
-  align-items: stretch;
-  margin-bottom: 1rem;
+  margin-top: 1.2rem;
 }
-.country-code-select {
-  padding: 0.7rem 0.5rem;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
+.register-text {
   font-size: 1rem;
-  background: #f7f7f7;
-  color: #09278a;
-  min-width: 140px;
-  height: 44px;
-  box-sizing: border-box;
-  align-self: stretch;
+  color: #555;
 }
-.phone-input {
-  flex: 1;
-  height: 44px;
-  box-sizing: border-box;
+.register-link-btn {
+  background: none;
+  color: #09278a;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  transition: color 0.2s;
+}
+.register-link-btn:hover {
+  color: #0b3bb3;
 }
 
 @media (max-width: 600px) {
-  .owner-registration-screen {
+  .login-screen {
     padding: 0;
     min-height: 100vh;
     height: 100vh;
     overflow: hidden;
   }
-  .owner-registration-card {
+  .login-card {
     padding: 1.2rem 0.5rem;
     max-width: 95vw;
     box-sizing: border-box;
   }
-  .owner-registration-card h2 {
+  .login-card h2 {
     font-size: 1.2rem;
   }
-  .owner-registration-input {
+  .login-input {
     font-size: 0.95rem;
     padding: 0.6rem 0.7rem;
     margin-bottom: 0.8rem;
   }
-  .owner-registration-btn {
+  .login-btn {
     font-size: 1rem;
     padding: 0.7rem 0;
   }
 }
 
 @media (min-width: 900px) {
-  .owner-registration-card {
+  .login-card {
     max-width: 420px;
     padding: 3rem 2.5rem;
   }
-  .owner-registration-card h2 {
+  .login-card h2 {
     font-size: 2rem;
   }
 }

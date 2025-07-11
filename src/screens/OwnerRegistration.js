@@ -221,7 +221,7 @@ const countryCodes = [
   // Add all other countries as needed
 ];
 
-function OwnerRegistration({ onBack }) {
+function OwnerRegistration({ onBack, onLogin }) {
   const [form, setForm] = useState({
     fullName: '',
     email: '',
@@ -347,6 +347,10 @@ function OwnerRegistration({ onBack }) {
 
           <button className="owner-registration-btn" type="submit">Register</button>
         </form>
+        <div className="register-link-row">
+          <span className="register-text">Already have an account?</span>
+          <button className="register-link-btn" type="button" onClick={onLogin}>Login</button>
+        </div>
       </div>
     </div>
   );
