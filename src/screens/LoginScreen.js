@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import './LoginScreen.css';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, query, where, collection, getDocs } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import SuperAdminDashboard from './SuperAdminDashboard';
+import OwnerRegistration from './OwnerRegistration';
+import OwnerDashboard from './OwnerDashboard';
+import LaundryServiceRegistration from './LaundryServiceRegistration';
 
 const firebaseConfig = {
   apiKey: "AIzaSyChjFt3B8WoMf0iJnTJgaEJsiCQT1B7DPc",
@@ -24,7 +27,11 @@ function LoginScreen({ onBack, onRegister }) {
   });
   const [error, setError] = useState('');
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
+  const [isServiceUser, setIsServiceUser] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [ownerData, setOwnerData] = useState(null);
+  const [serviceUserData, setServiceUserData] = useState(null);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -71,12 +78,82 @@ function LoginScreen({ onBack, onRegister }) {
         return;
       }
     }
-    // TODO: Add Firebase login logic for other users
-    alert('Login successful!');
+    // Owner login logic
+    try {
+      const ownerQ = query(collection(db, 'owners'), where('email', '==', form.email));
+      const ownerSnapshot = await getDocs(ownerQ);
+      if (!ownerSnapshot.empty) {
+        const owner = ownerSnapshot.docs[0].data();
+        if (owner.password !== form.password) {
+          setError('Incorrect password for owner.');
+          setShowErrorModal(true);
+          return;
+        }
+        if (!owner.approved) {
+          setError('Your account is pending approval by superadmin.');
+          setShowErrorModal(true);
+          return;
+        }
+        setOwnerData(owner);
+        setIsOwner(true);
+        return;
+      }
+    } catch (err) {
+      setError('Error connecting to Firestore.');
+      setShowErrorModal(true);
+      return;
+    }
+    // Laundry service user login logic
+    try {
+      const serviceQ = query(collection(db, 'services'), where('email', '==', form.email));
+      const serviceSnapshot = await getDocs(serviceQ);
+      if (!serviceSnapshot.empty) {
+        const user = serviceSnapshot.docs[0].data();
+        if (user.password !== form.password) {
+          setError('Incorrect password for laundry service user.');
+          setShowErrorModal(true);
+          return;
+        }
+        setServiceUserData(user);
+        setIsServiceUser(true);
+        return;
+      }
+    } catch (err) {
+      setError('Error connecting to Firestore.');
+      setShowErrorModal(true);
+      return;
+    }
+    setError('No account found for this email.');
+    setShowErrorModal(true);
+    return;
   };
 
   if (isSuperAdmin) {
     return <SuperAdminDashboard onLogout={() => setIsSuperAdmin(false)} />;
+  }
+
+  if (isOwner && ownerData) {
+    return <OwnerDashboard owner={ownerData} />;
+  }
+
+  if (isServiceUser && serviceUserData) {
+    return (
+      <div className="owner-registration-screen">
+        <div className="owner-registration-card" style={{ position: 'relative' }}>
+          <div style={{ position: 'absolute', top: 18, right: 18, zIndex: 2 }}>
+            <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="19" cy="19" r="19" fill="#09278a" />
+              <circle cx="19" cy="15" r="7" fill="#fff" />
+              <ellipse cx="19" cy="28" rx="10" ry="6" fill="#fff" />
+              <circle cx="19" cy="15" r="6" fill="#e3e8f7" />
+              <ellipse cx="19" cy="28" rx="8.5" ry="5.2" fill="#e3e8f7" />
+            </svg>
+          </div>
+          <h2>Welcome to Laundry Service Dashboard!</h2>
+          <p>You now have access to the laundry service dashboard.</p>
+        </div>
+      </div>
+    );
   }
 
   return (

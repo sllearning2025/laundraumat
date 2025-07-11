@@ -1,5 +1,20 @@
 import React, { useState } from 'react';
 import './OwnerRegistration.css';
+import { getFirestore, query, where, getDocs, collection, addDoc } from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyChjFt3B8WoMf0iJnTJgaEJsiCQT1B7DPc",
+  authDomain: "laundry-app-a166b.firebaseapp.com",
+  projectId: "laundry-app-a166b",
+  storageBucket: "laundry-app-a166b.firebasestorage.app",
+  messagingSenderId: "481789814862",
+  appId: "1:481789814862:web:c3277537f42607c10d7b1f",
+  measurementId: "G-WWNW5B7Q7H"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 // Comprehensive country code list (ISO 3166 + phone codes)
 const countryCodes = [
@@ -232,6 +247,9 @@ function OwnerRegistration({ onBack, onLogin }) {
     password: '',
   });
   const [errors, setErrors] = useState({});
+  const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -253,11 +271,38 @@ function OwnerRegistration({ onBack, onLogin }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     if (validate()) {
-      // Submit logic here
-      alert('Registration successful!');
+      setLoading(true);
+      try {
+        // Check if email already exists
+        const q = query(collection(db, 'owners'), where('email', '==', form.email));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          setErrors({ email: 'Email already registered.' });
+          setLoading(false);
+          return;
+        }
+        // Add owner to Firestore with approval=false
+        await addDoc(collection(db, 'owners'), {
+          ...form,
+          approved: false,
+        });
+        setShowSuccessModal(true);
+        setForm({
+          fullName: '',
+          email: '',
+          businessName: '',
+          businessAddress: '',
+          countryCode: countryCodes[0].code,
+          phone: '',
+          password: '',
+        });
+      } catch (err) {
+        setErrors({ general: 'Error submitting registration.' });
+      }
+      setLoading(false);
     }
   };
 
@@ -344,13 +389,59 @@ function OwnerRegistration({ onBack, onLogin }) {
             onChange={handleChange}
           />
           {errors.password && <div className="error-msg">{errors.password}</div>}
-
-          <button className="owner-registration-btn" type="submit">Register</button>
+          {errors.general && <div className="error-msg">{errors.general}</div>}
+          {success && <div className="success-msg">{success}</div>}
+          <button className="owner-registration-btn" type="submit" disabled={loading}>{loading ? 'Submitting...' : 'Register'}</button>
         </form>
         <div className="register-link-row">
           <span className="register-text">Already have an account?</span>
           <button className="register-link-btn" type="button" onClick={onLogin}>Login</button>
         </div>
+        {showSuccessModal && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h3>Registration Submitted!</h3>
+              <p>
+                Your registration was submitted successfully.<br />
+                Please try to login within <strong>5 minutes</strong>.<br />
+                If you are not approved, contact admin via WhatsApp:
+                <a href="https://wa.me/23278192988" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', marginLeft: '8px', color: '#25D366', textDecoration: 'none', fontWeight: 'bold' }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.477 2 2 6.477 2 12c0 1.624.39 3.207 1.13 4.627L2 22l5.486-1.115A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.488 0-2.94-.37-4.217-1.07l-.3-.17-3.252.66.67-3.17-.16-.31A7.96 7.96 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8zm4.13-5.47c-.225-.113-1.33-.657-1.535-.732-.205-.075-.355-.112-.505.112-.15.225-.58.732-.712.882-.132.15-.262.169-.487.057-.225-.113-.95-.35-1.81-1.113-.67-.597-1.123-1.334-1.255-1.559-.132-.225-.014-.347.099-.46.102-.101.225-.263.337-.394.112-.131.15-.225.225-.375.075-.15.037-.281-.018-.394-.057-.112-.505-1.22-.692-1.67-.182-.438-.367-.378-.505-.385-.131-.007-.281-.009-.432-.009-.15 0-.394.056-.601.281-.206.225-.79.773-.79 1.885s.81 2.188.922 2.34c.112.15 1.595 2.44 3.872 3.32.542.234.964.374 1.294.479.544.174 1.04.15 1.43.091.436-.065 1.33-.544 1.518-1.07.188-.525.188-0.974.132-1.07-.056-.094-.206-.15-.431-.263z" fill="#25D366"/></svg>
+                  <span style={{ marginLeft: '6px' }}>+23278192988</span>
+                </a>
+              </p>
+              <button className="owner-registration-btn" style={{ marginTop: '1rem' }} onClick={() => setShowSuccessModal(false)}>Close</button>
+            </div>
+            <style>{`
+              .modal-overlay {
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.35);
+                z-index: 9999;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+              .modal-content {
+                background: #fff;
+                border-radius: 16px;
+                box-shadow: 0 4px 24px rgba(9,39,138,0.15);
+                padding: 2rem 1.5rem;
+                max-width: 350px;
+                text-align: center;
+                color: #09278a;
+              }
+              .modal-content h3 {
+                margin-bottom: 1rem;
+                color: #09278a;
+              }
+              .modal-content p {
+                font-size: 1.05rem;
+                margin-bottom: 1.2rem;
+              }
+            `}</style>
+          </div>
+        )}
       </div>
     </div>
   );
