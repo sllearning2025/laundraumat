@@ -38,6 +38,7 @@ function OwnerLaundryServiceTab({ owner }) {
   const [editId, setEditId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [activeCategory, setActiveCategory] = useState(null);
 
   useEffect(() => {
     // Use owner.email as Firestore document ID for products if available
@@ -156,7 +157,22 @@ function OwnerLaundryServiceTab({ owner }) {
       >Add Product</button>
       <div style={{ marginBottom: '1rem', display: 'flex', gap: '1rem', flexWrap: 'wrap', width: '100%', justifyContent: 'center' }}>
         {categories.map(cat => (
-          <span key={cat} style={{ background: '#09278a', color: '#fff', borderRadius: 16, padding: '0.3rem 1rem', fontSize: 'clamp(0.85rem, 1.5vw, 0.95rem)', fontWeight: 500 }}>{cat}</span>
+          <span
+            key={cat}
+            onClick={() => setActiveCategory(cat === activeCategory ? null : cat)}
+            style={{
+              background: cat === activeCategory ? '#0b3bb3' : '#09278a',
+              color: '#fff',
+              borderRadius: 16,
+              padding: '0.3rem 1rem',
+              fontSize: 'clamp(0.85rem, 1.5vw, 0.95rem)',
+              fontWeight: 500,
+              cursor: 'pointer',
+              boxShadow: cat === activeCategory ? '0 2px 8px #e3e8f7' : 'none',
+              border: cat === activeCategory ? '2px solid #e3e8f7' : 'none',
+              transition: 'all 0.2s',
+            }}
+          >{cat}</span>
         ))}
       </div>
       {/* Only show product list, not the form inline. The form is only in the modal. */}
@@ -198,21 +214,23 @@ function OwnerLaundryServiceTab({ owner }) {
         </div>
       ) : (
         <div className="owner-laundry-scroll" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxHeight: '60vh', overflowY: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none', width: '100%', alignItems: 'center' }}>
-          {products.map(prod => (
-            <div key={prod.id} style={{ display: 'flex', alignItems: 'center', background: '#f7f9fc', borderRadius: 12, boxShadow: '0 1px 4px rgba(9,39,138,0.05)', padding: '0.7rem 1rem', flexWrap: 'wrap', width: '100%', maxWidth: 420 }}>
-              {prod.image && <img src={prod.image} alt={prod.name} style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 8, marginRight: '1rem', background: '#e3e8f7' }} />}
-              <div style={{ flex: '1 1 120px', minWidth: 90 }}>
-                <div style={{ fontWeight: 600, color: '#09278a', fontSize: 'clamp(1rem, 2vw, 1.1rem)' }}>{prod.name}</div>
-                <div style={{ fontSize: 'clamp(0.85rem, 1.5vw, 0.95rem)', color: '#555' }}>{PRODUCT_TYPES.find(t => t.value === prod.type)?.label}</div>
-                <div style={{ fontSize: 'clamp(0.85rem, 1.5vw, 0.95rem)', color: '#555' }}>Category: {prod.category || '-'}</div>
-                <div style={{ fontSize: 'clamp(0.85rem, 1.5vw, 0.95rem)', color: '#555' }}>Status: <span style={{ color: prod.status === 'active' ? '#0b3bb3' : '#bfc8e6', fontWeight: 600 }}>{prod.status}</span></div>
+          {products
+            .filter(prod => !activeCategory || prod.category === activeCategory)
+            .map(prod => (
+              <div key={prod.id} style={{ display: 'flex', alignItems: 'center', background: '#f7f9fc', borderRadius: 12, boxShadow: '0 1px 4px rgba(9,39,138,0.05)', padding: '0.7rem 1rem', flexWrap: 'wrap', width: '100%', maxWidth: 420 }}>
+                {prod.image && <img src={prod.image} alt={prod.name} style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 8, marginRight: '1rem', background: '#e3e8f7' }} />}
+                <div style={{ flex: '1 1 120px', minWidth: 90 }}>
+                  <div style={{ fontWeight: 600, color: '#09278a', fontSize: 'clamp(1rem, 2vw, 1.1rem)' }}>{prod.name}</div>
+                  <div style={{ fontSize: 'clamp(0.85rem, 1.5vw, 0.95rem)', color: '#555' }}>{PRODUCT_TYPES.find(t => t.value === prod.type)?.label}</div>
+                  <div style={{ fontSize: 'clamp(0.85rem, 1.5vw, 0.95rem)', color: '#555' }}>Category: {prod.category || '-'}</div>
+                  <div style={{ fontSize: 'clamp(0.85rem, 1.5vw, 0.95rem)', color: '#555' }}>Status: <span style={{ color: prod.status === 'active' ? '#0b3bb3' : '#bfc8e6', fontWeight: 600 }}>{prod.status}</span></div>
+                </div>
+                <div style={{ fontWeight: 600, color: '#0b3bb3', fontSize: 'clamp(1rem, 2vw, 1.1rem)', marginRight: '1rem' }}>{`SLL ${parseFloat(prod.price).toFixed(2)}`}</div>
+                <button onClick={() => handleEdit(prod)} style={{ background: '#e3e8f7', color: '#09278a', border: 'none', borderRadius: 8, padding: '0.3rem 1rem', fontWeight: 600, cursor: 'pointer', marginRight: '0.5rem', fontSize: 'clamp(0.85rem, 1.5vw, 0.95rem)' }}>Edit</button>
+                <button onClick={() => handleDelete(prod.id)} style={{ background: '#f44336', color: '#fff', border: 'none', borderRadius: 8, padding: '0.3rem 1rem', fontWeight: 600, cursor: 'pointer', fontSize: 'clamp(0.85rem, 1.5vw, 0.95rem)' }}>Delete</button>
               </div>
-              <div style={{ fontWeight: 600, color: '#0b3bb3', fontSize: 'clamp(1rem, 2vw, 1.1rem)', marginRight: '1rem' }}>{`SLL ${parseFloat(prod.price).toFixed(2)}`}</div>
-              <button onClick={() => handleEdit(prod)} style={{ background: '#e3e8f7', color: '#09278a', border: 'none', borderRadius: 8, padding: '0.3rem 1rem', fontWeight: 600, cursor: 'pointer', marginRight: '0.5rem', fontSize: 'clamp(0.85rem, 1.5vw, 0.95rem)' }}>Edit</button>
-              <button onClick={() => handleDelete(prod.id)} style={{ background: '#f44336', color: '#fff', border: 'none', borderRadius: 8, padding: '0.3rem 1rem', fontWeight: 600, cursor: 'pointer', fontSize: 'clamp(0.85rem, 1.5vw, 0.95rem)' }}>Delete</button>
-            </div>
-          ))}
-          {products.length === 0 && <div style={{ color: '#bfc8e6', textAlign: 'center', padding: '2rem 0', fontSize: 'clamp(0.9rem, 1.5vw, 1rem)' }}>No products added yet.</div>}
+            ))}
+          {products.filter(prod => !activeCategory || prod.category === activeCategory).length === 0 && <div style={{ color: '#bfc8e6', textAlign: 'center', padding: '2rem 0', fontSize: 'clamp(0.9rem, 1.5vw, 1rem)' }}>No products added yet.</div>}
         </div>
       )}
     </div>
