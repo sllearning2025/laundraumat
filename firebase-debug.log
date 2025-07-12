@@ -1,0 +1,50 @@
+[debug] [2025-07-12T09:30:38.821Z] ----------------------------------------------------------------------
+[debug] [2025-07-12T09:30:38.829Z] Command:       C:\nvm4w\nodejs\node.exe C:\nvm4w\nodejs\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-07-12T09:30:38.830Z] CLI Version:   14.10.1
+[debug] [2025-07-12T09:30:38.831Z] Platform:      win32
+[debug] [2025-07-12T09:30:38.831Z] Node Version:  v20.0.0
+[debug] [2025-07-12T09:30:38.831Z] Time:          Sat Jul 12 2025 09:30:38 GMT+0000 (Greenwich Mean Time)
+[debug] [2025-07-12T09:30:38.832Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-07-12T09:30:38.837Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2025-07-12T09:30:38.956Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-07-12T09:30:38.956Z] > authorizing via signed-in user (sllearninghub98@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\moham\laundry-app
+
+[debug] [2025-07-12T09:30:46.766Z] *** [apiv2] error from fetch(https://firebase-public.firebaseio.com/cli.json, {"headers":{},"method":"GET"}): FetchError: request to https://firebase-public.firebaseio.com/cli.json failed, reason: Socket connection timeout
+[warn] !  Unable to fetch the CLI MOTD and remote config. This is not a fatal error, but may indicate an issue with your network connection. 
+[debug] [2025-07-12T09:30:46.770Z] Failed to fetch MOTD FirebaseError: Failed to make request to https://firebase-public.firebaseio.com/cli.json
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2025-07-12T09:30:57.282Z] Checked if tokens are valid: false, expires at: 1752240671454
+[debug] [2025-07-12T09:30:57.282Z] Checked if tokens are valid: false, expires at: 1752240671454
+[debug] [2025-07-12T09:30:57.282Z] > refreshing access token with scopes: []
+[debug] [2025-07-12T09:30:57.284Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-07-12T09:30:57.284Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-07-12T09:31:00.778Z] *** [apiv2] error from fetch(https://www.googleapis.com/oauth2/v3/token, {"headers":{},"method":"POST","body":{"_overheadLength":545,"_valueLength":212,"_valuesToMeasure":[],"writable":false,"readable":true,"dataSize":0,"maxDataSize":2097152,"pauseStreams":true,"_released":true,"_streams":[],"_currentStream":null,"_insideLoop":false,"_pendingNext":false,"_boundary":"--------------------------596200162495704784396129","_events":{},"_eventsCount":1}}): FetchError: request to https://www.googleapis.com/oauth2/v3/token failed, reason: Socket connection timeout
+[error] Authentication Error: Your credentials are no longer valid. Please run firebase login --reauth
+
+For CI servers and headless environments, generate a new token with firebase login:ci
+[debug] [2025-07-12T09:31:00.779Z] Authentication Error: Your credentials are no longer valid. Please run firebase login --reauth
+
+For CI servers and headless environments, generate a new token with firebase login:ci
+[debug] [2025-07-12T09:31:05.809Z] Error: Timed out.
+    at Timeout._onTimeout (C:\Users\moham\AppData\Local\nvm\v20.0.0\node_modules\firebase-tools\lib\utils.js:267:49)
+    at listOnTimeout (node:internal/timers:573:17)
+    at process.processTimers (node:internal/timers:514:7)
+[error] 
+[error] Error: An unexpected error has occurred.
